@@ -64,7 +64,7 @@ contract StablePool is IStablePool{
     }
 
 
-    function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) public pure returns (uint256) {
+    function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) public view returns (uint256) {
         require(amountIn > 0, "Invalid input amount");
         require(reserveIn > 0 && reserveOut > 0, "Invalid reserves");
 
@@ -72,7 +72,7 @@ contract StablePool is IStablePool{
         return amountOut;
     }
 
-    function getPrice(bool isToken1) public pure returns (uint256){
+    function getPrice(bool isToken1) public view returns (uint256){
         if (isToken1 == true){
             return IERC20(token2).balanceOf(address(this))  / IERC20(token1).balanceOf(address(this));
         } else {
