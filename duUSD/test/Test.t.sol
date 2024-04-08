@@ -46,6 +46,7 @@ contract duUSDTest is Test {
         AMM = new LLAMMA(address(stableCoin), address(BTC), address(oracle));
         controller = new Controller( address(BTC), address(AMM), address(oracle), address(stableCoin));
         AMM.setAdmin(address(controller));
+        stableCoin.mint(address(controller), 10000000 * (10 ** 18));
         pegKeeper = new PegKeeper(address(stableCoin));
         console.log("initiliaze successful");
         stableCoin.mint(address(pegKeeper), 10000 * (10 ** 18));
