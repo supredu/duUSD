@@ -10,7 +10,7 @@ contract PegKeeper is Ownable {
     address public duUSD;
     mapping (address => address) public PairToken; // stablepool => pairtoken
     address[] stablePools;
-    constructor(address _duUSD){
+    constructor(address _duUSD) Ownable(msg.sender){
         duUSD = _duUSD;
     }
     function addStablePool(address _stablePool, address _pairToken) external onlyOwner {
