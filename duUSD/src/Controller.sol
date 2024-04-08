@@ -44,7 +44,7 @@ contract Controller {
         if (use_eth) {
             AMM.removeLiquidityETH(address(COLLATERAL_TOKEN), x, address(this));
         } else {
-            AMM.removeLiquidity(address(COLLATERAL_TOKEN), x, address(this));
+            AMM.removeLiquidity(address(COLLATERAL_TOKEN),address(STABLECOIN), x, address(this));
         }
         COLLATERAL_TOKEN.transfer(user, x);
         STABLECOIN.transferFrom(user, address(this), y);
@@ -64,7 +64,7 @@ contract Controller {
     function withdrawETH() external payable{
         require(positions[msg.sender].debt != 0 );
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
-        require(price >= positions[msg.sender].liquidationPrice, "Position is at risk of liquidation");
+        require(price >= positions[msg.sender].liquidation_price, "Position is at risk of liquidation");
         AMM.removeLiquidityETH(STABLECOIN, AMM.share[msg.sender], msg.sender);
         delete positions[msg.sender];
     }
