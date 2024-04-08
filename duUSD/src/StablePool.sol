@@ -2,9 +2,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "./interfaces/IStablePool.sol";
 
-
-contract StablePool {
+contract StablePool is IStablePool{
     address public token1;
     address public token2;
     uint256 public reserve1;
