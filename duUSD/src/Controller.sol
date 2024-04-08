@@ -20,7 +20,6 @@ contract Controller {
     IERC20 public immutable STABLECOIN;
     IERC20 public immutable COLLATERAL_TOKEN;
     address public oracle;
-    IMonetaryPolicy public monetary_policy;
 
     mapping(address => Position) public positions;
     // 构造函数
@@ -31,13 +30,7 @@ contract Controller {
         AMM = ILLAMMA(_amm);
         STABLECOIN = IERC20(_stablecoin);
     }
-
-    function setMonetaryPolicy(address _monetaryPolicy) external {
-        require(msg.sender == admin, "Only admin can set the monetary policy");
-        monetary_policy = IMonetaryPolicy(_monetaryPolicy);
-        emit SetMonetaryPolicy(_monetaryPolicy);
-    }
-
+    
     function liquidate(address user, uint256 min_x, bool use_eth) external {
         require(msg.sender == admin, "Only admin can liquidate");
         Position memory position = getPosition(user);
