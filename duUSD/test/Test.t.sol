@@ -55,7 +55,7 @@ contract duUSDTest is Test {
         console.log("pegKeeper init success");
         console.log(stableCoin.balanceOf(address(pegKeeper))); 
         pegKeeper.balance(address(stablePool), true, 100 * (10 ** 18));
-        console.log("balanced"");
+        console.log("balanced");
         console.log(stableCoin.balanceOf(address(pegKeeper))); 
         console.log("setup success");
         vm.stopPrank();
