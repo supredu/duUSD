@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./interfaces/IPriceOracle.sol";
+import "src/interfaces/IPriceOracle.sol";
 pragma solidity ^0.8.0;
 
 contract PriceOracle is IPriceOracle, Ownable {
