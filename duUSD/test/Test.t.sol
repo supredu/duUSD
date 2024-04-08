@@ -53,7 +53,9 @@ contract duUSDTest is Test {
         USDT.mint(ReLayer, 10000 * (10 ** 18));
         pegKeeper.addStablePool(address(stableCoin), address(USDT));
         console.log("pegKeeper init success");
+        console.log(stableCoin.balanceOf(address(pegKeeper))); 
         pegKeeper.balance(address(stablePool), true, 100 * (10 ** 18));
+        console.log("balanced"");
         console.log(stableCoin.balanceOf(address(pegKeeper))); 
         console.log("setup success");
         vm.stopPrank();
@@ -63,6 +65,7 @@ contract duUSDTest is Test {
 
     function test_deposit() public {
         vm.startPrank(ReLayer);
+        BTC.approve(address(AMM), 1000 * (10 ** 18));
         controller.deposit(100 * (10 ** 18));
         console.log(AMM.collateralTokenAmount());
         console.log(AMM.borrowedTokenAmount());
