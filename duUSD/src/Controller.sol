@@ -58,6 +58,8 @@ contract Controller {
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
         uint256 _amountToken = price / (10 ** priceDecimal) * msg.value;
         uint256 liquidation_price = price * 2 / 3;
+        address account = msg.sender;
+        STABLECOIN.transfer(account, debt);
         AMM.addLiquidityETH{value: msg.value}(address(0), _amountToken, msg.value, tx.origin);
         positions[msg.sender] = Position(msg.value, debt, liquidation_price);
     }
@@ -67,6 +69,7 @@ contract Controller {
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         require(price >= positions[msg.sender].liquidation_price, "Position is at risk of liquidation");
         AMM.removeLiquidityETH(address(STABLECOIN), AMM.share(msg.sender), msg.sender);
+        STABLECOIN.transferFrom(msg.sender, address(this), positions[msg.sender].debt);
         delete positions[msg.sender];
     }
 
@@ -77,6 +80,7 @@ contract Controller {
         uint256 _amountToken = price / priceDecimal * amountIn;
         uint256 liquidation_price = price * 2 / 3;
         address account = msg.sender;
+        STABLECOIN.transfer(account, debt);
         AMM.addLiquidity(amountIn, _amountToken, account);
         positions[msg.sender] = Position(amountIn, debt, liquidation_price);
     }
@@ -85,6 +89,7 @@ contract Controller {
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         require(price >= positions[msg.sender].liquidation_price, "Position is at risk of liquidation");
         AMM.removeLiquidity(address(COLLATERAL_TOKEN), address(STABLECOIN), AMM.share(msg.sender), msg.sender);
+        STABLECOIN.transferFrom(msg.sender, address(this), positions[msg.sender].debt);
         delete positions[msg.sender];
     }
 }
