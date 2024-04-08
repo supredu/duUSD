@@ -77,7 +77,7 @@ contract Controller {
         uint256 debt = amountIn * 6 / 10;
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
-        uint256 _amountToken = price / priceDecimal * amountIn;
+        uint256 _amountToken = price / (10 ** priceDecimal) * amountIn;
         uint256 liquidation_price = price * 2 / 3;
         address account = msg.sender;
         STABLECOIN.transfer(account, debt);
