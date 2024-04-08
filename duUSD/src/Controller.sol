@@ -37,14 +37,14 @@ contract Controller {
         uint256 x = position.collateral;
         uint256 y = position.debt;
         uint256 liquidation_price = position.liquidation_price;
-        uint256 price = IPriceOracle(oracle).getPrice(COLLATERAL_TOKEN);
+        uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         require(price < liquidation_price, "Price is above liquidation price");
         uint256 amount = y * price;
         require(amount >= min_x, "Amount is below min_x");
         if (use_eth) {
-            AMM.removeLiquidityETH(COLLATERAL_TOKEN, amount, x, address(this));
+            AMM.removeLiquidityETH(address(COLLATERAL_TOKEN), x, address(this));
         } else {
-            AMM.removeLiquidity(COLLATERAL_TOKEN, amount, x, address(this));
+            AMM.removeLiquidity(address(COLLATERAL_TOKEN), x, address(this));
         }
         COLLATERAL_TOKEN.transfer(user, x);
         STABLECOIN.transferFrom(user, address(this), y);
@@ -53,17 +53,17 @@ contract Controller {
 
     function depositETH() external payable {
         uint256 debt = msg.value * 6 / 10;
-        uint256 price = IPriceOracle(oracle).getPrice(COLLATERAL_TOKEN);
-        uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(COLLATERAL_TOKEN);
+        uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
+        uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
         uint256 _amountToken = price / (10 ** priceDecimal) * msg.value;
         uint256 liquidation_price = price * 2 / 3;
-        AMM.addLiquidityETH{value: msg.value}("", _amountToken, msg.value, tx.origin);
+        AMM.addLiquidityETH{value: msg.value}(address(0), _amountToken, msg.value, tx.origin);
         positions[msg.sender] = Position(msg.value, debt, liquidation_price);
     }
 
     function withdrawETH() external payable{
         require(positions[msg.sender].debt != 0 );
-        uint256 price = IPriceOracle(oracle).getPrice(COLLATERAL_TOKEN);
+        uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         require(price >= positions[msg.sender].liquidationPrice, "Position is at risk of liquidation");
         AMM.removeLiquidityETH(STABLECOIN, AMM.share[msg.sender], msg.sender);
         delete positions[msg.sender];
@@ -71,18 +71,18 @@ contract Controller {
 
     function deposit(uint amountIn) external {
         uint256 debt = amountIn * 6 / 10;
-        uint256 price = IPriceOracle(oracle).getPrice(COLLATERAL_TOKEN);
-        uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(COLLATERAL_TOKEN);
+        uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
+        uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
         uint256 _amountToken = price / priceDecimal * amountIn;
         uint256 liquidation_price = price * 2 / 3;
-        AMM.addLiquidity(COLLATERAL_TOKEN, STABLECOIN, tx.origin);
+        AMM.addLiquidity(address(COLLATERAL_TOKEN), STABLECOIN, tx.origin);
         positions[msg.sender] = Position(amountIn, debt, liquidation_price);
     }
 
     function withdraw() external{
-        uint256 price = IPriceOracle(oracle).getPrice(COLLATERAL_TOKEN);
-        require(price >= positions[msg.sender].liquidationPrice, "Position is at risk of liquidation");
-        AMM.removeLiquidity(COLLATERAL_TOKEN, STABLECOIN, AMM.share[msg.sender], msg.sender);
+        uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
+        require(price >= positions[msg.sender].liquidation_price, "Position is at risk of liquidation");
+        AMM.removeLiquidity(address(COLLATERAL_TOKEN), STABLECOIN, AMM.share[msg.sender], msg.sender);
         delete positions[msg.sender];
     }
 }
