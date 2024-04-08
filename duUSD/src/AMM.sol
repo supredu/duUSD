@@ -18,14 +18,11 @@ contract LLAMMA is ReentrancyGuard, ILLAMMA, Ownable {
     address public admin;
     uint256 public fee;
     uint256 public adminFee;
-    uint256 public rate;
     uint256 public k;
     mapping (address => uint256) public share;
 
     // Events
     event TokenExchange(address indexed buyer, uint256 soldId, uint256 tokensSold, uint256 boughtId, uint256 tokensBought);
-    event Deposit(address indexed provider, uint256 amount, int256 n1, int256 n2);
-    event Withdraw(address indexed provider, uint256 amountBorrowed, uint256 amountCollateral);
     event SetFee(uint256 fee);
     event SetAdminFee(uint256 fee);
 
