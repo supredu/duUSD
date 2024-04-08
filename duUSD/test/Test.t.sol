@@ -45,6 +45,7 @@ contract duUSDTest is Test {
         console.log("oracle init success");
         AMM = new LLAMMA(address(stableCoin), address(BTC), address(oracle));
         controller = new Controller( address(BTC), address(AMM), address(oracle), address(stableCoin));
+        AMM.setAdmin(address(controller));
         pegKeeper = new PegKeeper(address(stableCoin));
         console.log("initiliaze successful");
         stableCoin.mint(address(pegKeeper), 10000 * (10 ** 18));
@@ -58,11 +59,17 @@ contract duUSDTest is Test {
         vm.stopPrank();
 
 
-
-
     }
 
-
+    function test_deposit() public {
+        vm.startPrank(ReLayer);
+        controller.deposit(100 * (10 ** 18));
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        vm.stopPrank();
+    }
 
 
 
