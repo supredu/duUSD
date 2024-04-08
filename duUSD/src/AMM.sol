@@ -75,7 +75,7 @@ contract LLAMMA is ILLAMMA, Ownable, ReentrancyGuard{
 
         IERC20 token = IERC20(_token);
         uint256 amountEth = _share;
-        uint256 amountToken = _share * collateralTokenAmount / borrowedTokenAmount;
+        uint256 amountToken = (borrowedTokenAmount * _share) / share[account];
         borrowedTokenAmount -= amountToken;
         uint256 collaterTokenAmountBefore = collateralTokenAmount;
         collateralTokenAmount -= amountEth;
