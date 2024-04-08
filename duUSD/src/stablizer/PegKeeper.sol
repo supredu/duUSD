@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "./interfaces/IStablePool.sol";
+import "src/interfaces/IStablePool.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 

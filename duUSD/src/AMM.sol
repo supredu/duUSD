@@ -3,8 +3,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./interfaces/IPriceOracle.sol";
-import "./interfaces/ILLAMMA.sol";
+import "src/interfaces/IPriceOracle.sol";
+import "src/interfaces/ILLAMMA.sol";
 
 
 contract LLAMMA is ILLAMMA, Ownable {
