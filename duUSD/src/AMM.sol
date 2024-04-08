@@ -2,13 +2,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IPriceOracle.sol";
 import "./interfaces/ILLAMMA.sol";
 
 
-contract LLAMMA is ReentrancyGuard, ILLAMMA, Ownable {
+contract LLAMMA is ILLAMMA, Ownable {
     // State variables
     IERC20 public immutable borrowedToken; //duUSD
     IERC20 public immutable collateralToken;
