@@ -56,7 +56,7 @@ contract LLAMMA is ILLAMMA, Ownable, ReentrancyGuard{
     }
     function addLiquidityETH(address _token, uint _amountToken, uint _amountEth,address account) external onlyOwner payable {
         require(msg.value == _amountEth, "ETH amount does not match with the value sent");
-        uint256 collaterTokenAmountBefore = collateralTokenAmount;   
+        uint256 collateralTokenAmountBefore = collateralTokenAmount;   
         collateralTokenAmount += msg.value;    
         IERC20 token = IERC20(_token);
         require(token.transferFrom(admin, address(this), _amountToken), "Token transfer failed");
@@ -110,12 +110,12 @@ contract LLAMMA is ILLAMMA, Ownable, ReentrancyGuard{
     function addLiquidity(uint _amountTokenA, uint _amountTokenB, address account) external onlyOwner {
         IERC20 tokenA = IERC20(collateralToken);
         IERC20 tokenB = IERC20(borrowedToken);
-        uint256 collaterTokenAmountBefore = collateralTokenAmount;  
+        uint256 collateralTokenAmountBefore = collateralTokenAmount;  
         require(tokenA.transferFrom(account, address(this), _amountTokenA), "collateralToken transfer failed");
-        collateralTokenAmount[_tokenA] += _amountTokenA; 
+        collateralTokenAmount += _amountTokenA; 
 
         require(tokenB.transferFrom(admin, address(this), _amountTokenB), "borrowedToken transfer failed");
-        borrowedTokenAmount[_tokenB] += _amountTokenB; //duUSD
+        borrowedTokenAmount += _amountTokenB; //duUSD
         uint256 liquidityTokensToMint = _amountTokenA;
         share[account] += liquidityTokensToMint;
         if (k == 1e18){
@@ -142,7 +142,7 @@ contract LLAMMA is ILLAMMA, Ownable, ReentrancyGuard{
     // Transfer Token A and Token B back to the user
     IERC20(_tokenA).transfer(account, amountTokenAReturn);
     IERC20(_tokenB).transfer(admin, amountTokenBReturn);
-    k = (collateralTokenAmount / collaterTokenAmountBefore) * (collateralTokenAmount / collaterTokenAmountBefore) * k;
+    k = (collateralTokenAmount / collateralTokenAmountBefore) * (collateralTokenAmount / collateralTokenAmountBefore) * k;
 }
     function getAMAPrice() external view returns (uint256) {
         return collateralTokenAmount / borrowedTokenAmount;
