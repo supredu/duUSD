@@ -30,10 +30,10 @@ contract Controller {
         AMM = ILLAMMA(_amm);
         STABLECOIN = IERC20(_stablecoin);
     }
-    
+
     function liquidate(address user, uint256 min_x, bool use_eth) external {
         require(msg.sender == admin, "Only admin can liquidate");
-        Position memory position = getPosition(user);
+        Position memory position = positions[user];
         uint256 x = position.collateral;
         uint256 y = position.debt;
         uint256 liquidation_price = position.liquidation_price;
@@ -63,6 +63,7 @@ contract Controller {
 
     function withdrawETH() external payable{
         require(positions[msg.sender].debt != 0 );
+        uint256 price = IPriceOracle(oracle).getPrice(COLLATERAL_TOKEN);
         require(price >= positions[msg.sender].liquidationPrice, "Position is at risk of liquidation");
         AMM.removeLiquidityETH(STABLECOIN, AMM.share[msg.sender], msg.sender);
         delete positions[msg.sender];
@@ -79,6 +80,7 @@ contract Controller {
     }
 
     function withdraw() external{
+        uint256 price = IPriceOracle(oracle).getPrice(COLLATERAL_TOKEN);
         require(price >= positions[msg.sender].liquidationPrice, "Position is at risk of liquidation");
         AMM.removeLiquidity(COLLATERAL_TOKEN, STABLECOIN, AMM.share[msg.sender], msg.sender);
         delete positions[msg.sender];
