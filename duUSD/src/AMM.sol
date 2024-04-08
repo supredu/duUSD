@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/autils/ReentrancyGuardTransient.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuardTransient.sol";
 import "src/interfaces/IPriceOracle.sol";
 import "src/interfaces/ILLAMMA.sol";
 
