@@ -9,4 +9,5 @@ interface ILLAMMA {
     function addLiquidity(uint _amountTokenA, uint _amountTokenB, address account) external;
     function removeLiquidity(address _tokenA, address _tokenB, uint256 _share, address account) external;
     function getAMAPrice() external view returns (uint256);
+    function share(address account) external view returns (uint256);
 }
