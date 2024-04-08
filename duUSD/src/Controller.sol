@@ -29,6 +29,7 @@ contract Controller {
         oracle = _oracle;
         AMM = ILLAMMA(_amm);
         STABLECOIN = IERC20(_stablecoin);
+        STABLECOIN.approve(_amm, type(uint256).max);
     }
 
     function liquidate(address user, uint256 min_x, bool use_eth) external {
