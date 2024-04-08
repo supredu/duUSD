@@ -75,6 +75,15 @@ contract duUSDTest is Test {
         vm.stopPrank();
     }
 
-
+    function test_withdraw() public {
+        vm.startPrank(ReLayer);
+        stableCoin.approve(address(controller), 10000 * (10 ** 18));
+        controller.withdraw();
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        vm.stopPrank();
+    }
 
 }
