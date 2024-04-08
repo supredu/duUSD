@@ -29,7 +29,7 @@ interface IStablePool {
      * @param reserveOut 输出代币的储备量。
      * @return 输出的代币数量。
      */
-    function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) external pure returns (uint256);
+    function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) external view returns (uint256);
 
     /**
      * @dev 获取代币的价格。
