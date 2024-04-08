@@ -82,7 +82,7 @@ contract Controller {
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(COLLATERAL_TOKEN);
         uint256 _amountToken = price / priceDecimal * amountIn;
         uint256 liquidation_price = price * 2 / 3;
-        AMM.addLiquidity(COLLATERAL_TOKEN, STABLECOIN tx.origin);
+        AMM.addLiquidity(COLLATERAL_TOKEN, STABLECOIN, tx.origin);
         positions[msg.sender] = Position(amountIn, debt, liquidation_price);
     }
 
