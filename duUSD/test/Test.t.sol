@@ -36,7 +36,7 @@ contract duUSDTest is Test {
         vm.deal(address(this), 10 ether);
         vm.deal(ReLayer, 100 ether);
         vm.startPrank(admin);
-        stableCoin = new stableCoin(admin);
+        stableCoin = new StableCoin(admin);
         stablePool = new StablePool(address(stableCoin), address(USDT));
         oracle = new PriceOracle(admin);
         oracle.setIsPriceFeed(admin, true);
