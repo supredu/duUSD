@@ -43,14 +43,14 @@ contract duUSDTest is Test {
         oracle.setPriceDecimals(address(BTC), 18);
         oracle.emitPriceEvent(address(BTC), 60000 * 10 ** 18);
         console.log("oracle init success");
-        AMM = new LLAMMA(stableCoin, BTC, oracle);
+        AMM = new LLAMMA(address(stableCoin), address(BTC), address(oracle));
         controller = new Controller( address(BTC), address(AMM), address(oracle), address(stableCoin));
         pegKeeper = new PegKeeper(address(stableCoin));
         console.log("initiliaze successful");
         stableCoin.mint(address(pegKeeper), 10000 * (10 ** 18));
         BTC.mint(ReLayer, 10000 * (10 ** 18));
         USDT.mint(ReLayer, 10000 * (10 ** 18));
-        pegKeeper.addStablePool(stableCoin, USDT);
+        pegKeeper.addStablePool(address(stableCoin), address(USDT));
         console.log("pegKeeper init success");
         pegKeeper.balance(address(stablePool), true, 100 * (10 ** 18));
         console.log(stableCoin.balanceOf(address(pegKeeper))); 
