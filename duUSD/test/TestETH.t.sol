@@ -40,17 +40,16 @@ contract duUSDTest is Test {
         stablePool = new StablePool(address(stableCoin), address(USDT));
         oracle = new PriceOracle(admin);
         oracle.setIsPriceFeed(admin, true);
-        oracle.setPriceDecimals(address(BTC), 18);
-        oracle.emitPriceEvent(address(BTC), 60000 * 10 ** 18);
+        oracle.setPriceDecimals(ETHAddress, 18);
+        oracle.emitPriceEvent(ETHAddress, 3000 * 10 ** 18);
         console.log("oracle init success");
-        AMM = new LLAMMA(address(stableCoin), address(BTC), address(oracle));
-        controller = new Controller( address(BTC), address(AMM), address(oracle), address(stableCoin));
+        AMM = new LLAMMA(address(stableCoin), ETHAddress, address(oracle));
+        controller = new Controller( ETHAddress, address(AMM), address(oracle), address(stableCoin));
         AMM.setAdmin(address(controller));
         stableCoin.mint(address(controller), 10000000 * (10 ** 18));
         pegKeeper = new PegKeeper(address(stableCoin));
         console.log("initiliaze successful");
         stableCoin.mint(address(pegKeeper), 10000 * (10 ** 18));
-        BTC.mint(ReLayer, 10000 * (10 ** 18));
         USDT.mint(ReLayer, 10000 * (10 ** 18));
         pegKeeper.addStablePool(address(stableCoin), address(USDT));
         console.log("pegKeeper init success");
@@ -64,23 +63,11 @@ contract duUSDTest is Test {
 
     }
 
-    function test_deposit() public {
-        vm.startPrank(ReLayer);
-        BTC.approve(address(AMM), 1000 * (10 ** 18));
-        controller.deposit(100 * (10 ** 18));
-        console.log(AMM.collateralTokenAmount());
-        console.log(AMM.borrowedTokenAmount());
-        console.log(AMM.share(ReLayer));
-        console.log(AMM.k());
-        vm.stopPrank();
-    }
-
-    function test_withdraw_after_deposit() public {
+    function test_withdraw_after_deposit_ETH() public {
         vm.startPrank(ReLayer);
         stableCoin.approve(address(controller), 10000 * (10 ** 18));
-        BTC.approve(address(AMM), 1000 * (10 ** 18));
-        controller.deposit(100 * (10 ** 18));
-        controller.withdraw();
+        controller.depositETH{value: 100 ether}();
+        controller.withdrawETH();
         console.log(AMM.collateralTokenAmount());
         console.log(AMM.borrowedTokenAmount());
         console.log(AMM.share(ReLayer));

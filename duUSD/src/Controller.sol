@@ -60,7 +60,7 @@ contract Controller {
         uint256 liquidation_price = price * 2 / 3;
         address account = msg.sender;
         STABLECOIN.transfer(account, debt);
-        AMM.addLiquidityETH{value: msg.value}(address(0), _amountToken, msg.value, tx.origin);
+        AMM.addLiquidityETH{value: msg.value}(address(STABLECOIN), _amountToken, msg.value, account);
         positions[msg.sender] = Position(msg.value, debt, liquidation_price);
     }
 
