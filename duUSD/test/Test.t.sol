@@ -90,6 +90,7 @@ contract duUSDTest is Test {
         
     function test_liquidate() public {
         vm.startPrank(ReLayer);
+        stableCoin.approve(address(controller), 10000 * (10 ** 18));
         BTC.approve(address(AMM), 1000 * (10 ** 18));
         controller.deposit(100 * (10 ** 18));
         vm.stopPrank();
