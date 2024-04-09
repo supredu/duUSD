@@ -16,11 +16,14 @@ import {Script, console} from "forge-std/Script.sol";
 contract DeployScript is Script {
     address admin;
     address ReLayer;
-    LLAMMA AMM;
+    LLAMMA AMM_BTC;
+    LLAMMA AMM_ETH;
     PriceOracle oracle;
-    Controller controller;
+    Controller controller_BTC;
+    Controller controller_ETH;
     StableCoin stableCoin;
-    StablePool stablePool;
+    StablePool stablePoolT;
+    StablePool stablePoolC;
     PegKeeper pegKeeper;
     address ETHAddress = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
     address USDT = 0xcC808c2962bB8f2c92B269E04D536B702a8758A0;
