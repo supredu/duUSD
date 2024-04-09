@@ -78,7 +78,7 @@ contract duUSDTest is Test {
     function test_liquidate_ETH() public {
         vm.startPrank(ReLayer);
         stableCoin.approve(address(controller), 10000 * (10 ** 18));
-        controller.deposit(100 * (10 ** 18));
+        controller.depositETH{value: 100 ether}();
         vm.stopPrank();
         vm.startPrank(admin);
         oracle.emitPriceEvent(ETHAddress, 300 * 10 ** 18);
