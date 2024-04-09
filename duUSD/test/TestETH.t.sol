@@ -75,5 +75,19 @@ contract duUSDTest is Test {
         vm.stopPrank();
     }
         
+    function test_liquidate_ETH() public {
+        vm.startPrank(ReLayer);
+        stableCoin.approve(address(controller), 10000 * (10 ** 18));
+        controller.deposit(100 * (10 ** 18));
+        vm.stopPrank();
+        vm.startPrank(admin);
+        oracle.emitPriceEvent(ETHAddress, 300 * 10 ** 18);
+        controller.liquidate(ReLayer, true);
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        vm.stopPrank();
+    } 
     
 }
