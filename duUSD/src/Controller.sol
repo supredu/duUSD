@@ -43,7 +43,7 @@ contract Controller {
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
         uint256 amount = y * price / (10 ** priceDecimal);
         if (use_eth) {
-            AMM.removeLiquidityETH(address(COLLATERAL_TOKEN), x, user);
+            AMM.removeLiquidityETH(address(STABLECOIN), x, user);
         } else {
             AMM.removeLiquidity(address(COLLATERAL_TOKEN),address(STABLECOIN), x, user);
         }
