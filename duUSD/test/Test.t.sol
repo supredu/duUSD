@@ -88,5 +88,22 @@ contract duUSDTest is Test {
         vm.stopPrank();
     }
         
-    
+    function test_liquidate() public {
+        vm.startPrank(ReLayer);
+        BTC.approve(address(AMM), 1000 * (10 ** 18));
+        controller.deposit(100 * (10 ** 18));
+        vm.stopPrank();
+        vm.startPrank(admin);
+        oracle.emitPriceEvent(address(BTC), 30000 * 10 ** 18);
+        vm.stopPrank();
+        vm.startPrank(ReLayer);
+        controller.liquidate(ReLayer, false);
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        vm.stopPrank();
+    } {
+        
+    }
 }

@@ -32,7 +32,7 @@ contract Controller {
         STABLECOIN.approve(_amm, type(uint256).max);
     }
 
-    function liquidate(address user, uint256 min_x, bool use_eth) external {
+    function liquidate(address user, bool use_eth) external {
         require(msg.sender == admin, "Only admin can liquidate");
         Position memory position = positions[user];
         uint256 x = position.collateral;
@@ -40,16 +40,14 @@ contract Controller {
         uint256 liquidation_price = position.liquidation_price;
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         require(price < liquidation_price, "Price is above liquidation price");
-        uint256 amount = y * price;
-        require(amount >= min_x, "Amount is below min_x");
+        uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
+        uint256 amount = y * price / (10 ** priceDecimal);
         if (use_eth) {
             AMM.removeLiquidityETH(address(COLLATERAL_TOKEN), x, address(this));
         } else {
             AMM.removeLiquidity(address(COLLATERAL_TOKEN),address(STABLECOIN), x, address(this));
         }
-        COLLATERAL_TOKEN.transfer(user, x);
         STABLECOIN.transferFrom(user, address(this), y);
-        STABLECOIN.transfer(admin, y);
     }
 
     function depositETH() external payable {
@@ -57,7 +55,7 @@ contract Controller {
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
         uint256 _amountToken = price / (10 ** priceDecimal) * msg.value;
-        uint256 liquidation_price = price * 2 / 3;
+        uint256 liquidation_price = price * 7 / 10;
         address account = msg.sender;
         STABLECOIN.transfer(account, debt);
         AMM.addLiquidityETH{value: msg.value}(address(STABLECOIN), _amountToken, msg.value, account);
@@ -78,7 +76,7 @@ contract Controller {
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
         uint256 _amountToken = price / (10 ** priceDecimal) * amountIn;
-        uint256 liquidation_price = price * 2 / 3;
+        uint256 liquidation_price = price * 7 / 10;
         address account = msg.sender;
         STABLECOIN.transfer(account, debt);
         AMM.addLiquidity(amountIn, _amountToken, account);
