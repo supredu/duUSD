@@ -103,7 +103,7 @@ contract duUSDTest is Test {
         console.log(AMM.share(ReLayer));
         console.log(AMM.k());
         vm.stopPrank();
-    } {
+    } 
         
-    }
+    
 }
