@@ -95,8 +95,6 @@ contract duUSDTest is Test {
         vm.stopPrank();
         vm.startPrank(admin);
         oracle.emitPriceEvent(address(BTC), 30000 * 10 ** 18);
-        vm.stopPrank();
-        vm.startPrank(ReLayer);
         controller.liquidate(ReLayer, false);
         console.log(AMM.collateralTokenAmount());
         console.log(AMM.borrowedTokenAmount());
