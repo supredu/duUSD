@@ -94,6 +94,7 @@ contract LLAMMA is ILLAMMA, Ownable, ReentrancyGuard{
             IERC20(borrowedToken).transfer(msg.sender, amountOut);
         }
         else {
+            IERC20(collateralToken).transferFrom(msg.sender,address(this),amountIn);
             collateralTokenAmount += amountIn;
             amountOut = borrowedTokenAmount - k / collateralTokenAmount;
             borrowedTokenAmount -= amountOut;
@@ -101,6 +102,7 @@ contract LLAMMA is ILLAMMA, Ownable, ReentrancyGuard{
         }
     }
     function swapBForC(uint256 amountIn) external  nonReentrant {
+        IERC20(borrowedToken).transferFrom(msg.sender,address(this),amountIn);
         borrowedTokenAmount += amountIn;
         uint256 amountOut = collateralTokenAmount - k / borrowedTokenAmount;        
         borrowedTokenAmount -= amountOut;

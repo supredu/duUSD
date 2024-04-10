@@ -51,6 +51,7 @@ contract Controller {
     }
 
     function depositETH() external payable {
+        require(msg.value > 0,"value under zero");
         uint256 debt = msg.value * 6 / 10;
         uint256 price = IPriceOracle(oracle).getPrice(address(COLLATERAL_TOKEN));
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
