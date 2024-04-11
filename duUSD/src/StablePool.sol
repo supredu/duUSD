@@ -48,14 +48,14 @@ contract StablePool is IStablePool{
         if (fromToken == token1) {
             require(reserve1 + amountIn > reserve1, "Overflow");
     
-            amountOut = reserve2 - (reserve1 + amountIn - reserve2);
+            amountOut = amountIn;
             reserve1 += amountIn;
             reserve2 -= amountOut;
             IERC20(token1).transferFrom(msg.sender, address(this), amountIn);
             IERC20(token2).transfer(msg.sender, amountOut);
         } else {
             require(reserve2 + amountIn > reserve2, "Overflow");
-            amountOut = reserve1 - (reserve2 + amountIn - reserve1);
+            amountOut = amountIn;
             reserve2 += amountIn;
             reserve1 -= amountOut;
             IERC20(token2).transferFrom(msg.sender, address(this), amountIn);
