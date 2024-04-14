@@ -65,7 +65,7 @@ contract duUSDTest is Test {
 
     function test_withdraw_after_deposit_ETH() public {
         vm.startPrank(ReLayer);
-        stableCoin.approve(address(controller), 100000 * (10 ** 18));
+        stableCoin.approve(address(controller), 1000000 * (10 ** 18));
         controller.depositETH{value: 100 ether}();
         controller.withdrawETH();
         console.log(AMM.collateralTokenAmount());
@@ -77,7 +77,7 @@ contract duUSDTest is Test {
         
     function test_liquidate_ETH() public {
         vm.startPrank(ReLayer);
-        stableCoin.approve(address(controller), 100000 * (10 ** 18));
+        stableCoin.approve(address(controller), 1000000 * (10 ** 18));
         controller.depositETH{value: 100 ether}();
         vm.stopPrank();
         vm.startPrank(admin);
