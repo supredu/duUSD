@@ -103,6 +103,47 @@ contract duUSDTest is Test {
         console.log(AMM.k());
         vm.stopPrank();
     } 
-        
     
+    function test_swap() public {
+        vm.startPrank(ReLayer);
+        stableCoin.approve(address(controller), 10000000 * (10 ** 18));
+        BTC.approve(address(AMM), 1000 * (10 ** 18));
+        controller.deposit(100 * (10 ** 18));
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        AMM.swapCForB(1 * (10 ** 18));
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        vm.stopPrank();
+    } 
+
+    function test_balance() public {
+        vm.startPrank(ReLayer);
+        stableCoin.approve(address(controller), 10000000 * (10 ** 18));
+        BTC.approve(address(AMM), 1000 * (10 ** 18));
+        controller.deposit(100 * (10 ** 18));
+        vm.stopPrank();
+        vm.startPrank(admin);
+        oracle.emitPriceEvent(address(BTC), 30000 * 10 ** 18);
+        controller.liquidate(ReLayer, false);
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        vm.stopPrank();
+    } 
+
+    function test_deposit_twice() public {
+        vm.startPrank(ReLayer);
+        stableCoin.approve(address(controller), 10000000 * (10 ** 18));
+        BTC.approve(address(AMM), 1000 * (10 ** 18));
+        controller.deposit(100 * (10 ** 18));
+        controller.withdraw();
+        controller.deposit(100 * (10 ** 18));
+        vm.stopPrank();
+    }
 }
