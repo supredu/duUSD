@@ -104,5 +104,20 @@ contract duUSDTest is Test {
         vm.stopPrank();
     } 
         
-    
+    function test_swap() public {
+        vm.startPrank(ReLayer);
+        stableCoin.approve(address(controller), 10000000 * (10 ** 18));
+        BTC.approve(address(AMM), 1000 * (10 ** 18));
+        controller.deposit(100 * (10 ** 18));
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        AMM.swapCForB(1 * (10 ** 18));
+        console.log(AMM.collateralTokenAmount());
+        console.log(AMM.borrowedTokenAmount());
+        console.log(AMM.share(ReLayer));
+        console.log(AMM.k());
+        vm.stopPrank();
+    }     
 }
