@@ -42,12 +42,8 @@ contract Controller {
         require(price < liquidation_price, "Price is above liquidation price");
         uint256 priceDecimal = IPriceOracle(oracle).getPriceDecimals(address(COLLATERAL_TOKEN));
         uint256 amount = y * price / (10 ** priceDecimal);
-        if (use_eth) {
-            AMM.removeLiquidityETH(address(STABLECOIN), x, user);
-        } else {
-            AMM.removeLiquidity(address(COLLATERAL_TOKEN),address(STABLECOIN), x, user);
-        }
-        STABLECOIN.transferFrom(user, address(this), y);
+        AMM.liquidateSwap(x,user);
+        delete positions[user];
     }
 
     function depositETH() external payable {
